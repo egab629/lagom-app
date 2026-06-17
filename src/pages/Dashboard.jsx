@@ -4,6 +4,17 @@ import { useSelection } from '../state/SelectionProvider'
 import { useNavigate } from 'react-router-dom'
 import { saveUserSelection, isFirebaseConfigured } from '../auth/firebase'
 
+const previewMap = {
+  'Left-1': new URL('../assets/preview-left-1.svg', import.meta.url).href,
+  'Left-2': new URL('../assets/preview-left-2.svg', import.meta.url).href,
+  'Left-3': new URL('../assets/preview-left-3.svg', import.meta.url).href,
+  'Left-4': new URL('../assets/preview-left-4.svg', import.meta.url).href,
+  'Right-1': new URL('../assets/preview-right-1.svg', import.meta.url).href,
+  'Right-2': new URL('../assets/preview-right-2.svg', import.meta.url).href,
+  'Right-3': new URL('../assets/preview-right-3.svg', import.meta.url).href,
+  'Right-4': new URL('../assets/preview-right-4.svg', import.meta.url).href,
+}
+
 export default function Dashboard() {
   const { user } = useAuth()
   const { selection, home, layout, elevation, counter, finish, cabinetColor, cabinetStyle, flooring, sinkType, sinkStyle, sinkBowls, applianceFinish, setSelection } = useSelection()
@@ -58,6 +69,15 @@ export default function Dashboard() {
             <h3 className="text-lg font-medium">Selected Lagom Home</h3>
             {home ? (
               <div className="mt-1 space-y-3">
+                {layout && elevation && previewMap[`${layout}-${elevation}`] ? (
+                  <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
+                    <img
+                      src={previewMap[`${layout}-${elevation}`]}
+                      alt={`${home} - ${layout} layout, elevation ${elevation} preview`}
+                      className="w-full object-cover"
+                    />
+                  </div>
+                ) : null}
                 <div className="flex flex-wrap items-center gap-3">
                   <span className="text-gray-700 font-semibold">{home}</span>
                   <span className="rounded-full bg-lagom-50 px-2 py-1 text-sm text-lagom-700">Layout: {layout || 'Not set'}</span>

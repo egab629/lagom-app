@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Nav from './components/Nav'
 import Home from './pages/Home'
 import About from './pages/About'
@@ -30,7 +30,7 @@ export default function App() {
   return (
     <AuthProvider>
       <SelectionProvider>
-        <BrowserRouter>
+        <HashRouter>
           <div className="min-h-screen bg-gray-50">
             <Nav />
             <main className="p-4 sm:p-6 max-w-4xl mx-auto">
@@ -51,7 +51,7 @@ export default function App() {
               </Routes>
             </main>
           </div>
-        </BrowserRouter>
+        </HashRouter>
       </SelectionProvider>
     </AuthProvider>
   )
