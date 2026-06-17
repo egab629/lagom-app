@@ -18,7 +18,16 @@ export default function Nav() {
             <NavLink to="/" className={({isActive}) => (isActive ? 'text-white font-semibold px-3 py-2 rounded' : 'text-green-100 px-3 py-2 rounded hover:text-white')}>Home</NavLink>
             <NavLink to="/about" className={({isActive}) => (isActive ? 'text-white font-semibold px-3 py-2 rounded' : 'text-green-100 px-3 py-2 rounded hover:text-white')}>About</NavLink>
             {user ? (
-              <NavLink to="/dashboard" className={({isActive}) => (isActive ? 'text-white font-semibold px-3 py-2 rounded' : 'text-green-100 px-3 py-2 rounded hover:text-white')}>Dashboard</NavLink>
+              <>
+                <NavLink to="/dashboard" className={({isActive}) => (isActive ? 'text-white font-semibold px-3 py-2 rounded' : 'text-green-100 px-3 py-2 rounded hover:text-white')}>Dashboard</NavLink>
+                <button
+                  type="button"
+                  onClick={logout}
+                  className="text-green-100 px-3 py-2 rounded hover:text-white"
+                >
+                  Sign out
+                </button>
+              </>
             ) : (
               <NavLink to="/login" className={({isActive}) => (isActive ? 'text-white font-semibold px-3 py-2 rounded' : 'text-green-100 px-3 py-2 rounded hover:text-white')}>Sign in</NavLink>
             )}
