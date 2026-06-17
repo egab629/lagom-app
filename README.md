@@ -1,8 +1,8 @@
-# Lagom App (starter)
+# lagom-app
 
-React + Vite + Tailwind starter scaffold.
+Lagom Home App built with React, Vite, and Tailwind CSS.
 
-Setup:
+## Setup
 
 ```bash
 cd "My Drive/Lagom App/lagom-webapp"
@@ -10,6 +10,7 @@ npm install
 npm run dev
 ```
 
-Notes:
-- Mobile responsive by default using Tailwind utilities.
-- Edit `src/App.jsx` and styles in `src/index.css`.
+## Notes
+
+- Mobile responsive using Tailwind utilities.
+- Main app entry is in `src/App.jsx` with styles in `src/index.css`.
