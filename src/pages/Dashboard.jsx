@@ -52,7 +52,6 @@ export default function Dashboard() {
       {user ? (
         <div>
           <p className="text-gray-700">Welcome, {user.displayName || user.email}</p>
-          <pre className="text-sm text-gray-500 mt-2">{JSON.stringify({ uid: user.uid, email: user.email }, null, 2)}</pre>
           <div className="mt-4">
             <h3 className="text-lg font-medium">Selected Lagom Home</h3>
             {home ? (
