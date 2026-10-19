@@ -8,7 +8,6 @@ const highlights = [
 ]
 
 const communities = [
-  { name: 'Bluebird Lane', place: 'Athens, GA', body: 'Our flagship community of cottages, townhomes, and condos.' },
   { name: 'Oakdale Forest', place: 'Greensboro, GA', body: 'Phase 1 offers 50 single-family cottages, starting at $249,000.' },
 ]
 
