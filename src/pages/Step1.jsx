@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react'
 import StepNav from '../components/StepNav'
 import { useNavigate } from 'react-router-dom'
 import { useSelection } from '../state/SelectionProvider'
-import { homes, homeSpecs } from '../data/homes'
+import { homes, getHome, homeSpecs } from '../data/homes'
+import FloorPlan from '../components/FloorPlan'
 
 export default function Step1() {
   const navigate = useNavigate()
@@ -56,6 +57,12 @@ export default function Step1() {
           )
         })}
       </div>
+
+      {selected ? (
+        <div className="mt-6">
+          <FloorPlan home={getHome(selected)} />
+        </div>
+      ) : null}
 
       <div className="mt-6 flex items-center gap-3">
         <button

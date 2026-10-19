@@ -4,6 +4,7 @@ import { useSelection } from '../state/SelectionProvider'
 import { useNavigate } from 'react-router-dom'
 import { saveUserSelection, isFirebaseConfigured } from '../auth/firebase'
 import { getHome, homeSpecs } from '../data/homes'
+import FloorPlan from '../components/FloorPlan'
 
 export default function Dashboard() {
   const { user } = useAuth()
@@ -65,6 +66,7 @@ export default function Dashboard() {
                     </div>
                   </div>
                 ) : null}
+                <FloorPlan home={getHome(home)} />
                 <div className="flex flex-wrap items-center gap-3">
                   <span className="rounded-full bg-lagom-50 px-2 py-1 text-sm text-lagom-700">Counter: {counter || 'Not set'}</span>
                   <span className="rounded-full bg-lagom-50 px-2 py-1 text-sm text-lagom-700">Finish: {finish || 'Not set'}</span>

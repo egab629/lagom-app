@@ -7,6 +7,7 @@ export const homes = [
     sqft: 1493,
     dimensions: '62′ × 26′',
     image: new URL('../assets/model-1.jpg', import.meta.url).href,
+    floorPlan: new URL('../assets/plan-1.jpg', import.meta.url).href,
     description: 'Designed for comfortable everyday living, this thoughtfully planned home features an open-concept layout, spacious gathering areas, and private bedroom retreats, bringing together style, functionality, and lasting value.',
   },
   {
@@ -16,6 +17,7 @@ export const homes = [
     sqft: 1400,
     dimensions: '43′ × 45′',
     image: new URL('../assets/model-2.jpg', import.meta.url).href,
+    floorPlan: new URL('../assets/plan-2.jpg', import.meta.url).href,
     description: 'Designed for modern family living, this thoughtfully planned home combines open gathering spaces, comfortable private bedrooms, and smart everyday functionality in an efficient footprint.',
   },
   {
@@ -25,6 +27,7 @@ export const homes = [
     sqft: 1200,
     dimensions: '49′ × 32′',
     image: new URL('../assets/model-3.jpg', import.meta.url).href,
+    floorPlan: new URL('../assets/plan-3.jpg', import.meta.url).href,
     description: 'Thoughtfully designed for comfortable everyday living, this efficient two-bedroom home features open-concept spaces, abundant natural light, and a private primary suite — all in a smart, easy-to-maintain layout.',
   },
   {
@@ -34,6 +37,7 @@ export const homes = [
     sqft: 1176,
     dimensions: '47′ × 28′',
     image: new URL('../assets/model-4.jpg', import.meta.url).href,
+    floorPlan: new URL('../assets/plan-4.jpg', import.meta.url).href,
     description: 'Designed for growing families, this thoughtfully planned home offers three comfortable bedrooms, open-concept living, and functional spaces that make everyday life effortless.',
   },
   {
@@ -43,6 +47,7 @@ export const homes = [
     sqft: 1277,
     dimensions: '50′ × 29′',
     image: new URL('../assets/model-5.jpg', import.meta.url).href,
+    floorPlan: new URL('../assets/plan-5.jpg', import.meta.url).href,
     description: 'Designed for modern family living, this spacious home features an open-concept layout, a private primary suite, and thoughtfully designed spaces that bring comfort and functionality together.',
   },
 ]
