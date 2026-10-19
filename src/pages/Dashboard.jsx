@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { saveUserSelection, isFirebaseConfigured } from '../auth/firebase'
 import { getHome, homeSpecs } from '../data/homes'
 import FloorPlan from '../components/FloorPlan'
+import WaitlistCard from '../components/WaitlistCard'
 
 export default function Dashboard() {
   const { user } = useAuth()
@@ -75,6 +76,7 @@ export default function Dashboard() {
                   <span className="rounded-full bg-lagom-50 px-2 py-1 text-sm text-lagom-700">Sink: {sinkType || 'Not set'} / {sinkStyle || 'Not set'} / {sinkBowls || 'Not set'}</span>
                   <span className="rounded-full bg-lagom-50 px-2 py-1 text-sm text-lagom-700">Appliances: {applianceFinish || 'Not set'}</span>
                 </div>
+                <WaitlistCard user={user} selection={selection} />
                 <div className="flex flex-wrap gap-4">
                   <button onClick={handleCustomizeHome} className="text-sm text-white bg-lagom-500 hover:bg-lagom-600 font-medium px-4 py-2 rounded-md">Customize Your Home</button>
                   <button onClick={clearSelection} className="text-sm text-red-600 hover:text-red-700 font-medium">Clear</button>

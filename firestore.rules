@@ -1,0 +1,49 @@
+rules_version = '2';
+
+// Firestore security rules for the Lagom app (project lagom-app-494215).
+// Publish in the Firebase console: Firestore Database > Rules > paste this file > Publish.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Keep in sync with ADMIN_EMAILS in src/auth/admin.js
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.email_verified == true
+        && request.auth.token.email.lower() in ['gina@lagomdevelopment.com', 'egab629@gmail.com'];
+    }
+
+    function isOwner(uid) {
+      return request.auth != null && request.auth.uid == uid;
+    }
+
+    function isLagomHome(home) {
+      return home in ['Model 1', 'Model 2', 'Model 3', 'Model 4', 'Model 5'];
+    }
+
+    // Each customer's in-progress selections
+    match /users/{uid} {
+      allow read, write: if isOwner(uid);
+      allow read: if isAdmin();
+    }
+
+    // Full waitlist entry: name, email, selections. Private to the customer and admins.
+    match /waitlist/{uid} {
+      allow read: if isOwner(uid) || isAdmin();
+      allow delete: if isOwner(uid) || isAdmin();
+      allow create, update: if isOwner(uid)
+        && request.resource.data.uid == uid
+        && request.resource.data.email == request.auth.token.email
+        && isLagomHome(request.resource.data.home)
+        && request.resource.data.selections.home == request.resource.data.home;
+    }
+
+    // Model only, so any signed-in customer can count the line without seeing who is in it
+    match /waitlistHomes/{uid} {
+      allow read: if request.auth != null;
+      allow delete: if isOwner(uid) || isAdmin();
+      allow create, update: if isOwner(uid)
+        && request.resource.data.keys().hasOnly(['home'])
+        && isLagomHome(request.resource.data.home);
+    }
+  }
+}

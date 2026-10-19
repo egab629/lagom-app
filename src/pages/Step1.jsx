@@ -4,11 +4,21 @@ import { useNavigate } from 'react-router-dom'
 import { useSelection } from '../state/SelectionProvider'
 import { homes, getHome, homeSpecs } from '../data/homes'
 import FloorPlan from '../components/FloorPlan'
+import { getWaitlistCounts } from '../data/waitlist'
 
 export default function Step1() {
   const navigate = useNavigate()
   const { selection, setSelection } = useSelection()
   const [selected, setSelected] = useState(selection?.home || null)
+  const [waitlistCounts, setWaitlistCounts] = useState({})
+
+  useEffect(() => {
+    let mounted = true
+    getWaitlistCounts(homes.map((h) => h.id))
+      .then((counts) => mounted && setWaitlistCounts(counts))
+      .catch((e) => console.error('getWaitlistCounts error', e))
+    return () => { mounted = false }
+  }, [])
 
   useEffect(() => {
     if (selected) {
@@ -51,6 +61,11 @@ export default function Step1() {
               <div className="p-4">
                 <p className="font-semibold">{home.id}</p>
                 <p className="text-sm font-medium text-lagom-700 mt-1">{homeSpecs(home)}</p>
+                {typeof waitlistCounts[home.id] === 'number' ? (
+                  <p className="mt-2 inline-block rounded-full bg-white px-2 py-0.5 text-xs font-semibold text-lagom-700 ring-1 ring-lagom-200">
+                    {waitlistCounts[home.id]} on the waitlist
+                  </p>
+                ) : null}
                 <p className="text-sm text-gray-500 mt-2">{home.description}</p>
               </div>
             </button>

@@ -12,6 +12,7 @@ import Step6 from './pages/Step6'
 import Step7 from './pages/Step7'
 import Step8 from './pages/Step8'
 import Dashboard from './pages/Dashboard'
+import Admin from './pages/Admin'
 import { AuthProvider, useAuth } from './auth/AuthProvider'
 import SelectionProvider from './state/SelectionProvider'
 
@@ -45,6 +46,7 @@ export default function App() {
                 <Route path="/select-sink" element={<PrivateRoute><Step7 /></PrivateRoute>} />
                 <Route path="/select-appliances" element={<PrivateRoute><Step8 /></PrivateRoute>} />
                 <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+                <Route path="/admin" element={<PrivateRoute><Admin /></PrivateRoute>} />
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </main>

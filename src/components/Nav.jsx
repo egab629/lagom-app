@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link, NavLink } from 'react-router-dom'
 import { useAuth } from '../auth/AuthProvider'
+import { isAdmin } from '../auth/admin'
 
 export default function Nav() {
   const { user, logout } = useAuth()
@@ -20,6 +21,9 @@ export default function Nav() {
             {user ? (
               <>
                 <NavLink to="/dashboard" className={({isActive}) => (isActive ? 'text-white font-semibold px-3 py-2 rounded' : 'text-green-100 px-3 py-2 rounded hover:text-white')}>Dashboard</NavLink>
+                {isAdmin(user) && (
+                  <NavLink to="/admin" className={({isActive}) => (isActive ? 'text-white font-semibold px-3 py-2 rounded' : 'text-green-100 px-3 py-2 rounded hover:text-white')}>Admin</NavLink>
+                )}
                 <button
                   type="button"
                   onClick={logout}
@@ -51,6 +55,9 @@ export default function Nav() {
                 {user ? (
                   <>
                     <Link to="/dashboard" onClick={closeMenu} className="block px-4 py-2 text-gray-700 hover:bg-lagom-50">Dashboard</Link>
+                    {isAdmin(user) && (
+                      <Link to="/admin" onClick={closeMenu} className="block px-4 py-2 text-gray-700 hover:bg-lagom-50">Admin</Link>
+                    )}
                     <button
                       type="button"
                       onClick={() => {
