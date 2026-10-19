@@ -38,6 +38,7 @@ export default function Step1() {
 
   return (
     <section className="bg-white rounded-lg shadow-md p-6">
+      <h2 className="text-2xl font-semibold mb-4">Step 1 - Select Your Lagom Home</h2>
       <StepNav onNext={confirmSelection} canProceed={Boolean(selected)} onSaveExit={saveAndExit} />
       <p className="text-gray-600 mb-4">Choose the home that matches your living style and preferences. Only one selection allowed — confirm below before proceeding.</p>
 
