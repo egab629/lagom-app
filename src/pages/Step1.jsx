@@ -2,13 +2,12 @@ import React, { useState, useEffect } from 'react'
 import StepNav from '../components/StepNav'
 import { useNavigate } from 'react-router-dom'
 import { useSelection } from '../state/SelectionProvider'
+import { homes, homeSpecs } from '../data/homes'
 
 export default function Step1() {
   const navigate = useNavigate()
   const { selection, setSelection } = useSelection()
   const [selected, setSelected] = useState(selection?.home || null)
-
-  const choices = ['Cozy Cottage', 'Urban Loft', 'Modern Farmhouse', 'Beach Bungalow']
 
   useEffect(() => {
     if (selected) {
@@ -18,7 +17,7 @@ export default function Step1() {
 
   function confirmSelection() {
     if (!selected) return
-    navigate('/configure-home')
+    navigate('/select-counter')
   }
 
   function saveAndExit() {
@@ -32,23 +31,27 @@ export default function Step1() {
       <StepNav onNext={confirmSelection} canProceed={Boolean(selected)} onSaveExit={saveAndExit} />
       <p className="text-gray-600 mb-4">Choose the home that matches your living style and preferences. Only one selection allowed — confirm below before proceeding.</p>
 
-      <div className="grid gap-4 sm:grid-cols-2">
-        {choices.map((choice) => {
-          const isSelected = selected === choice
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {homes.map((home) => {
+          const isSelected = selected === home.id
           return (
             <button
-              key={choice}
-              onClick={() => setSelected(choice)}
+              key={home.id}
+              onClick={() => setSelected(home.id)}
               aria-pressed={isSelected}
               className={
-                `rounded-lg border p-4 text-left transition transform duration-150 hover:scale-105 ` +
+                `overflow-hidden rounded-lg border text-left transition duration-150 ` +
                 (isSelected
                   ? 'border-lagom-500 bg-lagom-50 ring-2 ring-lagom-200'
                   : 'border-gray-200 hover:border-lagom-500 hover:bg-lagom-50')
               }
             >
-              <p className="font-semibold">{choice}</p>
-              <p className="text-sm text-gray-500 mt-1">A thoughtful home for your Lagom lifestyle.</p>
+              <img src={home.image} alt={home.id} className="aspect-[4/3] w-full object-cover" />
+              <div className="p-4">
+                <p className="font-semibold">{home.id}</p>
+                <p className="text-sm font-medium text-lagom-700 mt-1">{homeSpecs(home)}</p>
+                <p className="text-sm text-gray-500 mt-2">{home.description}</p>
+              </div>
             </button>
           )
         })}

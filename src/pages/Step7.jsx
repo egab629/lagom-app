@@ -47,7 +47,7 @@ export default function Step7() {
 
   return (
     <section className="bg-white rounded-lg shadow-md p-6">
-      <h2 className="text-2xl font-semibold mb-4">Step 7 - Select Your Kitchen Sink</h2>
+      <h2 className="text-2xl font-semibold mb-4">Step 6 - Select Your Kitchen Sink</h2>
       <StepNav onNext={confirmSink} canProceed={Boolean(type && style && bowls)} onSaveExit={saveAndExit} />
       <p className="text-gray-600 mb-6">Choose sink type, style, and bowl configuration.</p>
 

@@ -4,13 +4,12 @@ import { useSelection } from '../state/SelectionProvider'
 
 const steps = [
   { path: '/select-home', label: '1. Select Home' },
-  { path: '/configure-home', label: '2. Configure' },
-  { path: '/select-counter', label: '3. Counters' },
-  { path: '/select-finish', label: '4. Finishes' },
-  { path: '/select-cabinets', label: '5. Cabinets' },
-  { path: '/select-flooring', label: '6. Flooring' },
-  { path: '/select-sink', label: '7. Sink' },
-  { path: '/select-appliances', label: '8. Appliances' },
+  { path: '/select-counter', label: '2. Counters' },
+  { path: '/select-finish', label: '3. Finishes' },
+  { path: '/select-cabinets', label: '4. Cabinets' },
+  { path: '/select-flooring', label: '5. Flooring' },
+  { path: '/select-sink', label: '6. Sink' },
+  { path: '/select-appliances', label: '7. Appliances' },
 ]
 
 export default function StepNav({ onNext, canProceed, nextLabel = 'Next', onSaveExit } = {}) {
@@ -38,18 +37,16 @@ export default function StepNav({ onNext, canProceed, nextLabel = 'Next', onSave
       case 0:
         return Boolean(selection.home)
       case 1:
-        return Boolean(selection.layout && selection.elevation)
-      case 2:
         return Boolean(selection.counter)
-      case 3:
+      case 2:
         return Boolean(selection.finish)
-      case 4:
+      case 3:
         return Boolean(selection.cabinetColor && selection.cabinetStyle)
-      case 5:
+      case 4:
         return Boolean(selection.flooring)
-      case 6:
+      case 5:
         return Boolean(selection.sinkType && selection.sinkStyle && selection.sinkBowls)
-      case 7:
+      case 6:
         return Boolean(selection.applianceFinish)
       default:
         return true

@@ -46,7 +46,7 @@ export default function Step3() {
 
   return (
     <section className="bg-white rounded-lg shadow-md p-6">
-      <h2 className="text-2xl font-semibold mb-4">Step 3 - Select Your Counters</h2>
+      <h2 className="text-2xl font-semibold mb-4">Step 2 - Select Your Counters</h2>
       <StepNav onNext={confirmCounter} canProceed={Boolean(counter)} onSaveExit={saveAndExit} />
       <p className="text-gray-600 mb-6">Choose the countertop material that matches your kitchen style and lifestyle.</p>
 
@@ -94,7 +94,7 @@ export default function Step3() {
         </button>
 
         <button
-          onClick={() => navigate('/configure-home')}
+          onClick={() => navigate('/select-home')}
           className="ml-auto px-3 py-2 text-sm text-gray-600"
         >
           Back

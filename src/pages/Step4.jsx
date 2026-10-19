@@ -44,7 +44,7 @@ export default function Step4() {
 
   return (
     <section className="bg-white rounded-lg shadow-md p-6">
-      <h2 className="text-2xl font-semibold mb-4">Step 4 - Select Your Finish</h2>
+      <h2 className="text-2xl font-semibold mb-4">Step 3 - Select Your Finish</h2>
       <StepNav onNext={confirmFinish} canProceed={Boolean(finish)} onSaveExit={saveAndExit} />
       <p className="text-gray-600 mb-6">Choose the hardware finish that complements your Lagom home style.</p>
 

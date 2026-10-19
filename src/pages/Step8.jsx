@@ -38,7 +38,7 @@ export default function Step8() {
 
   return (
     <section className="bg-white rounded-lg shadow-md p-6">
-      <h2 className="text-2xl font-semibold mb-4">Step 8 - Select Appliance Finish</h2>
+      <h2 className="text-2xl font-semibold mb-4">Step 7 - Select Appliance Finish</h2>
       <StepNav onNext={confirmAppliance} canProceed={Boolean(applianceFinish)} nextLabel="Finish" onSaveExit={saveAndExit} />
       <p className="text-gray-600 mb-6">Choose the finish for your kitchen appliances.</p>
 

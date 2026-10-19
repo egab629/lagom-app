@@ -5,7 +5,6 @@ import Home from './pages/Home'
 import About from './pages/About'
 import Login from './pages/Login'
 import Step1 from './pages/Step1'
-import Step2 from './pages/Step2'
 import Step3 from './pages/Step3'
 import Step4 from './pages/Step4'
 import Step5 from './pages/Step5'
@@ -39,7 +38,6 @@ export default function App() {
                 <Route path="/about" element={<About />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/select-home" element={<PrivateRoute><Step1 /></PrivateRoute>} />
-                <Route path="/configure-home" element={<PrivateRoute><Step2 /></PrivateRoute>} />
                 <Route path="/select-counter" element={<PrivateRoute><Step3 /></PrivateRoute>} />
                 <Route path="/select-finish" element={<PrivateRoute><Step4 /></PrivateRoute>} />
                 <Route path="/select-cabinets" element={<PrivateRoute><Step5 /></PrivateRoute>} />

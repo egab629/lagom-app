@@ -44,7 +44,7 @@ export default function Step6() {
 
   return (
     <section className="bg-white rounded-lg shadow-md p-6">
-      <h2 className="text-2xl font-semibold mb-4">Step 6 - Select Flooring</h2>
+      <h2 className="text-2xl font-semibold mb-4">Step 5 - Select Flooring</h2>
       <StepNav onNext={confirmFlooring} canProceed={Boolean(flooring)} onSaveExit={saveAndExit} />
       <p className="text-gray-600 mb-6">Choose a luxury vinyl plank for your home.</p>
 

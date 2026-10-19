@@ -1,6 +1,13 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { useAuth } from '../auth/AuthProvider'
 import { getUserSelection, saveUserSelection, isFirebaseConfigured } from '../auth/firebase'
+import { getHome } from '../data/homes'
+
+// selections saved before the Lagom 5 may name a home that no longer exists
+function dropRetiredHome(s) {
+  if (!s || !s.home || getHome(s.home)) return s
+  return { ...s, home: null }
+}
 
 const SelectionContext = createContext(null)
 export function useSelection() {
@@ -11,9 +18,9 @@ export function SelectionProvider({ children }) {
   const [selection, setSelection] = useState(() => {
     try {
       const stored = localStorage.getItem('selectedHome')
-      return stored ? JSON.parse(stored) : { home: null, layout: null, elevation: null, counter: null, finish: null, cabinetColor: null, cabinetStyle: null, flooring: null, sinkType: null, sinkStyle: null, sinkBowls: null, applianceFinish: null, lastStep: null }
+      return stored ? dropRetiredHome(JSON.parse(stored)) : { home: null, counter: null, finish: null, cabinetColor: null, cabinetStyle: null, flooring: null, sinkType: null, sinkStyle: null, sinkBowls: null, applianceFinish: null, lastStep: null }
     } catch (e) {
-      return { home: null, layout: null, elevation: null, counter: null, finish: null, cabinetColor: null, cabinetStyle: null, flooring: null, sinkType: null, sinkStyle: null, sinkBowls: null, applianceFinish: null, lastStep: null }
+      return { home: null, counter: null, finish: null, cabinetColor: null, cabinetStyle: null, flooring: null, sinkType: null, sinkStyle: null, sinkBowls: null, applianceFinish: null, lastStep: null }
     }
   })
 
@@ -37,7 +44,7 @@ export function SelectionProvider({ children }) {
     async function load() {
       if (!user || !isFirebaseConfigured) return
       const s = await getUserSelection(user.uid)
-      if (mounted && s) setSelection(s)
+      if (mounted && s) setSelection(dropRetiredHome(s))
     }
     load()
     return () => { mounted = false }
@@ -54,8 +61,6 @@ export function SelectionProvider({ children }) {
       value={{
         selection,
         home: selection?.home || null,
-        layout: selection?.layout || null,
-        elevation: selection?.elevation || null,
         counter: selection?.counter || null,
         finish: selection?.finish || null,
         cabinetColor: selection?.cabinetColor || null,

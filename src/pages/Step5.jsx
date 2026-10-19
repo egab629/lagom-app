@@ -49,7 +49,7 @@ export default function Step5() {
 
   return (
     <section className="bg-white rounded-lg shadow-md p-6">
-      <h2 className="text-2xl font-semibold mb-4">Step 5 - Select Your Cabinets</h2>
+      <h2 className="text-2xl font-semibold mb-4">Step 4 - Select Your Cabinets</h2>
       <StepNav onNext={confirmCabinets} canProceed={Boolean(color && style)} onSaveExit={saveAndExit} />
       <p className="text-gray-600 mb-6">Pick a cabinet color and style for your kitchen.</p>
 

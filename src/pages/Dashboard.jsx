@@ -3,25 +3,14 @@ import { useAuth } from '../auth/AuthProvider'
 import { useSelection } from '../state/SelectionProvider'
 import { useNavigate } from 'react-router-dom'
 import { saveUserSelection, isFirebaseConfigured } from '../auth/firebase'
-
-const previewMap = {
-  'Left-1': new URL('../assets/preview-left-1.svg', import.meta.url).href,
-  'Left-2': new URL('../assets/preview-left-2.svg', import.meta.url).href,
-  'Left-3': new URL('../assets/preview-left-3.svg', import.meta.url).href,
-  'Left-4': new URL('../assets/preview-left-4.svg', import.meta.url).href,
-  'Right-1': new URL('../assets/preview-right-1.svg', import.meta.url).href,
-  'Right-2': new URL('../assets/preview-right-2.svg', import.meta.url).href,
-  'Right-3': new URL('../assets/preview-right-3.svg', import.meta.url).href,
-  'Right-4': new URL('../assets/preview-right-4.svg', import.meta.url).href,
-}
+import { getHome, homeSpecs } from '../data/homes'
 
 export default function Dashboard() {
   const { user } = useAuth()
-  const { selection, home, layout, elevation, counter, finish, cabinetColor, cabinetStyle, flooring, sinkType, sinkStyle, sinkBowls, applianceFinish, setSelection } = useSelection()
+  const { selection, home, counter, finish, cabinetColor, cabinetStyle, flooring, sinkType, sinkStyle, sinkBowls, applianceFinish, setSelection } = useSelection()
   const navigate = useNavigate()
   const stepPaths = [
     '/select-home',
-    '/configure-home',
     '/select-counter',
     '/select-finish',
     '/select-cabinets',
@@ -33,7 +22,6 @@ export default function Dashboard() {
   const getResumePath = () => {
     if (!selection?.home) return '/select-home'
     if (selection?.lastStep && stepPaths.includes(selection.lastStep)) return selection.lastStep
-    if (!selection?.layout || !selection?.elevation) return '/configure-home'
     if (!selection?.counter) return '/select-counter'
     if (!selection?.finish) return '/select-finish'
     if (!selection?.cabinetColor || !selection?.cabinetStyle) return '/select-cabinets'
@@ -48,7 +36,7 @@ export default function Dashboard() {
   }
 
   const clearSelection = async () => {
-    setSelection({ home: null, layout: null, elevation: null, counter: null, finish: null, cabinetColor: null, cabinetStyle: null, flooring: null, sinkType: null, sinkStyle: null, sinkBowls: null, applianceFinish: null, lastStep: null })
+    setSelection({ home: null, counter: null, finish: null, cabinetColor: null, cabinetStyle: null, flooring: null, sinkType: null, sinkStyle: null, sinkBowls: null, applianceFinish: null, lastStep: null })
     if (user && isFirebaseConfigured) {
       try {
         await saveUserSelection(user.uid, null)
@@ -69,19 +57,16 @@ export default function Dashboard() {
             <h3 className="text-lg font-medium">Selected Lagom Home</h3>
             {home ? (
               <div className="mt-1 space-y-3">
-                {layout && elevation && previewMap[`${layout}-${elevation}`] ? (
+                {getHome(home) ? (
                   <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
-                    <img
-                      src={previewMap[`${layout}-${elevation}`]}
-                      alt={`${home} - ${layout} layout, elevation ${elevation} preview`}
-                      className="w-full object-cover"
-                    />
+                    <img src={getHome(home).image} alt={home} className="w-full object-cover" />
+                    <div className="p-4">
+                      <p className="text-gray-900 font-semibold">{home}</p>
+                      <p className="text-sm text-gray-600">{homeSpecs(getHome(home))} · {getHome(home).dimensions}</p>
+                    </div>
                   </div>
                 ) : null}
                 <div className="flex flex-wrap items-center gap-3">
-                  <span className="text-gray-700 font-semibold">{home}</span>
-                  <span className="rounded-full bg-lagom-50 px-2 py-1 text-sm text-lagom-700">Layout: {layout || 'Not set'}</span>
-                  <span className="rounded-full bg-lagom-50 px-2 py-1 text-sm text-lagom-700">Elevation: {elevation || 'Not set'}</span>
                   <span className="rounded-full bg-lagom-50 px-2 py-1 text-sm text-lagom-700">Counter: {counter || 'Not set'}</span>
                   <span className="rounded-full bg-lagom-50 px-2 py-1 text-sm text-lagom-700">Finish: {finish || 'Not set'}</span>
                   <span className="rounded-full bg-lagom-50 px-2 py-1 text-sm text-lagom-700">Cabinets: {cabinetColor || 'Not set'} / {cabinetStyle || 'Not set'}</span>

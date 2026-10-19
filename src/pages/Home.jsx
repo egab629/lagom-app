@@ -9,7 +9,7 @@ export default function Home() {
       <div className="max-w-2xl space-y-5">
         <p className="text-sm font-semibold uppercase tracking-[0.2em] text-lagom-600">Lagom Home Customization</p>
         <h2 className="text-3xl font-semibold text-gray-900 sm:text-4xl">Design the details of your next Lagom home.</h2>
-        <p className="text-gray-600 text-base sm:text-lg">Walk through each selection step, preview your chosen elevation, and save your progress as you customize counters, finishes, cabinets, flooring, sink, and appliances.</p>
+        <p className="text-gray-600 text-base sm:text-lg">Choose from the Lagom 5 home designs, walk through each selection step, and save your progress as you customize counters, finishes, cabinets, flooring, sink, and appliances.</p>
         <div className="flex flex-col gap-3 sm:flex-row">
           <button
             type="button"
