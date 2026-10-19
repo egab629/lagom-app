@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react'
 import { useAuth } from '../auth/AuthProvider'
 import { getUserSelection, saveUserSelection, isFirebaseConfigured } from '../auth/firebase'
 import { getHome } from '../data/homes'
@@ -9,6 +9,8 @@ function dropRetiredHome(s) {
   return { ...s, home: null }
 }
 
+const EMPTY_SELECTION = { home: null, counter: null, finish: null, cabinetColor: null, cabinetStyle: null, flooring: null, sinkType: null, sinkStyle: null, sinkBowls: null, applianceFinish: null, lastStep: null }
+
 const SelectionContext = createContext(null)
 export function useSelection() {
   return useContext(SelectionContext)
@@ -18,9 +20,9 @@ export function SelectionProvider({ children }) {
   const [selection, setSelection] = useState(() => {
     try {
       const stored = localStorage.getItem('selectedHome')
-      return stored ? dropRetiredHome(JSON.parse(stored)) : { home: null, counter: null, finish: null, cabinetColor: null, cabinetStyle: null, flooring: null, sinkType: null, sinkStyle: null, sinkBowls: null, applianceFinish: null, lastStep: null }
+      return stored ? dropRetiredHome(JSON.parse(stored)) : EMPTY_SELECTION
     } catch (e) {
-      return { home: null, counter: null, finish: null, cabinetColor: null, cabinetStyle: null, flooring: null, sinkType: null, sinkStyle: null, sinkBowls: null, applianceFinish: null, lastStep: null }
+      return EMPTY_SELECTION
     }
   })
 
@@ -37,24 +39,38 @@ export function SelectionProvider({ children }) {
   }, [selection])
 
   const { user } = useAuth()
+  const uid = user?.uid || null
+  // uid whose Firestore selection has been loaded; saving waits for this so the
+  // browser's copy can't overwrite the account's saved selection on sign-in
+  const [loadedUid, setLoadedUid] = useState(null)
+  const prevUid = useRef(null)
 
-  // when user signs in, try to load selection from Firestore
+  // signing out clears this browser so the next person to sign in doesn't inherit the selection
+  useEffect(() => {
+    if (prevUid.current && !uid) setSelection(EMPTY_SELECTION)
+    prevUid.current = uid
+  }, [uid])
+
+  // on sign-in, the account's saved selection wins; if it has none, keep this browser's
   useEffect(() => {
     let mounted = true
-    async function load() {
-      if (!user || !isFirebaseConfigured) return
-      const s = await getUserSelection(user.uid)
-      if (mounted && s) setSelection(dropRetiredHome(s))
-    }
-    load()
+    setLoadedUid(null)
+    if (!uid || !isFirebaseConfigured) return
+    getUserSelection(uid)
+      .then((s) => {
+        if (!mounted) return
+        const saved = dropRetiredHome(s)
+        if (saved?.home) setSelection(saved)
+        setLoadedUid(uid)
+      })
+      .catch((e) => console.error('getUserSelection error', e))
     return () => { mounted = false }
-  }, [user])
+  }, [uid])
 
-  // when selection changes and user is present, save to Firestore
   useEffect(() => {
-    if (!user || !isFirebaseConfigured) return
-    saveUserSelection(user.uid, selection)
-  }, [selection, user])
+    if (!uid || !isFirebaseConfigured || loadedUid !== uid) return
+    saveUserSelection(uid, selection)
+  }, [selection, uid, loadedUid])
 
   return (
     <SelectionContext.Provider

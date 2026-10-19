@@ -48,16 +48,12 @@ async function saveUserSelection(uid, selection) {
   }
 }
 
+// throws on failure so callers can tell "nothing saved" apart from "couldn't load"
 async function getUserSelection(uid) {
   if (!db || !uid) return null
-  try {
-    const snap = await getDoc(doc(db, 'users', uid))
-    if (snap.exists()) return snap.data().selection || null
-    return null
-  } catch (e) {
-    console.error('getUserSelection error', e)
-    return null
-  }
+  const snap = await getDoc(doc(db, 'users', uid))
+  if (snap.exists()) return snap.data().selection || null
+  return null
 }
 
 export { auth, googleProvider, githubProvider, db, saveUserSelection, getUserSelection }
