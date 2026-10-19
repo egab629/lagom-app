@@ -1,11 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import { useAuth } from '../auth/AuthProvider'
 import { isAdmin } from '../auth/admin'
-import { homes } from '../data/homes'
+import { homes, getHome } from '../data/homes'
 import { SELECTION_FIELDS, getAllSavedSelections, getAllWaitlistEntries } from '../data/waitlist'
 
 function toDate(ts) {
   return ts?.toDate?.() || null
+}
+
+function entryHome(e) {
+  return e.home || e.selections?.home || null
+}
+
+// one group per Lagom 5 model, plus any entries whose model is missing or retired
+function groupByHome(waitlist) {
+  const groups = homes.map((h) => ({ title: h.id, entries: waitlist.filter((e) => entryHome(e) === h.id) }))
+  const other = waitlist.filter((e) => !getHome(entryHome(e)))
+  if (other.length) groups.push({ title: 'Other or no model', entries: other })
+  return groups
 }
 
 // [{ value, all, waitlist }] for one selection field, most popular first
@@ -29,7 +41,7 @@ function downloadCsv(entries) {
     e.name || '',
     e.email || '',
     toDate(e.joinedAt)?.toISOString() || '',
-    ...SELECTION_FIELDS.map((f) => e.selections?.[f.key] || ''),
+    ...SELECTION_FIELDS.map((f) => (f.key === 'home' ? entryHome(e) : e.selections?.[f.key]) || ''),
   ])
   const csv = [header, ...lines].map((row) => row.map((v) => `"${String(v).replace(/"/g, '""')}"`).join(',')).join('\n')
   const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }))
@@ -105,18 +117,17 @@ export default function Admin() {
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
           {homes.map((h) => (
             <div key={h.id} className="rounded-lg border border-gray-200 p-3 text-center">
-              <p className="text-2xl font-semibold text-lagom-700">{waitlist.filter((e) => e.home === h.id).length}</p>
+              <p className="text-2xl font-semibold text-lagom-700">{waitlist.filter((e) => entryHome(e) === h.id).length}</p>
               <p className="text-sm text-gray-600">{h.id}</p>
             </div>
           ))}
         </div>
 
-        {homes.map((h) => {
-          const entries = waitlist.filter((e) => e.home === h.id)
+        {groupByHome(waitlist).map(({ title, entries }) => {
           if (!entries.length) return null
           return (
-            <div key={h.id} className="mt-6">
-              <h3 className="mb-2 text-lg font-medium">{h.id}</h3>
+            <div key={title} className="mt-6">
+              <h3 className="mb-2 text-lg font-medium">{title}</h3>
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-sm">
                   <thead className="border-b border-gray-200 text-gray-500">
@@ -125,6 +136,7 @@ export default function Admin() {
                       <th className="py-2 pr-3 font-medium">Name</th>
                       <th className="py-2 pr-3 font-medium">Email</th>
                       <th className="py-2 pr-3 font-medium">Joined</th>
+                      <th className="py-2 pr-3 font-medium">Model</th>
                       <th className="py-2 font-medium">Selections</th>
                     </tr>
                   </thead>
@@ -135,6 +147,7 @@ export default function Admin() {
                         <td className="py-2 pr-3">{e.name || '—'}</td>
                         <td className="py-2 pr-3"><a href={`mailto:${e.email}`} className="text-lagom-700 hover:underline">{e.email}</a></td>
                         <td className="py-2 pr-3 whitespace-nowrap">{toDate(e.joinedAt)?.toLocaleDateString() || '—'}</td>
+                        <td className="py-2 pr-3 whitespace-nowrap font-medium">{entryHome(e) || '—'}</td>
                         <td className="py-2 text-gray-600">
                           {SELECTION_FIELDS.filter((f) => f.key !== 'home').map((f) => e.selections?.[f.key]).filter(Boolean).join(' · ')}
                         </td>
